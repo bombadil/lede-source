@@ -524,6 +524,41 @@ endef
 $(eval $(call KernelPackage,igb))
 
 
+define KernelPackage/i40e
+  SUBMENU:=$(NETWORK_DEVICES_MENU)
+  TITLE:=Intel(R) Ethernet Controller XL710 Family support
+  DEPENDS:=@PCI_SUPPORT +kmod-ptp
+  KCONFIG:=CONFIG_I40E \
+    CONFIG_I40E_VXLAN=n \
+    CONFIG_I40E_DCB=n \
+    CONFIG_I40E_FCOE=n
+  FILES:=$(LINUX_DIR)/drivers/net/ethernet/intel/i40e/i40e.ko
+  AUTOLOAD:=$(call AutoProbe,i40e)
+endef
+
+define KernelPackage/i40e/description
+  Kernel module for Intel(R) XL710 family
+endef
+
+$(eval $(call KernelPackage,i40e))
+
+
+define KernelPackage/i40evf
+  SUBMENU:=$(NETWORK_DEVICES_MENU)
+  TITLE:=Intel(R) XL710 X710 Virtual Function Ethernet support
+  DEPENDS:=@PCI_SUPPORT
+  KCONFIG:=CONFIG_I40EVF
+  FILES:=$(LINUX_DIR)/drivers/net/ethernet/intel/i40evf/i40evf.ko
+  AUTOLOAD:=$(call AutoProbe,i40evf)
+endef
+
+define KernelPackage/i40evf/description
+  Kernel module for Intel(R) XL710 virtual functions
+endef
+
+$(eval $(call KernelPackage,i40evf))
+
+
 define KernelPackage/b44
   TITLE:=Broadcom 44xx driver
   KCONFIG:=CONFIG_B44
